@@ -1,9 +1,13 @@
 #include <IRremote.h>
 
-const int ir_pin = 6;
-const int speaker_pin = 7;
-const int greens[] = {3, 4, 5};
-const int reds[] = {8, 9, 10};
+const int ir_pin = 0;
+const int speaker_pin = 2;
+const int green = 13;
+const int red3 = 12;
+const int red2 = 11;
+const int red1 = 10;
+const int reds[] = {10, 11, 12};
+int BassTab[]={1911,1702,1516,1431,1275,1136,1012};
 int pin;
 
 IRrecv irrecv(ir_pin);
@@ -14,26 +18,23 @@ void setup() {
   Serial.begin(115200);
   irrecv.enableIRIn(); // Start the receiver
 
-  // speaker pin
-  pinMode(7, OUTPUT);
-  // red lights
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  // green lights
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
+  pinMode(ir_pin, OUTPUT);
+  pinMode(speaker_pin, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(red1, OUTPUT);
+  pinMode(red2, OUTPUT);
+  pinMode(red3, OUTPUT);
+  digitalWrite(speaker_pin, LOW);
 }
 
 void greenLight() {
   tone(speaker_pin, 750);
-  digitalWriteArray(greens, HIGH);
+  digitalWrite(green, HIGH);
   delay(1000);
   
   noTone(speaker_pin);
   delay(5000);
-  digitalWriteArray(greens, LOW);
+  digitalWrite(green, LOW);
 }
 
 void countDown(int pin) {
@@ -59,7 +60,7 @@ void loop() {
       digitalWriteArray(reds, HIGH);
       delay(5000);
       
-      for(pin = 8; pin < 11; pin++)
+      for(pin = 10; pin < 13; pin++)
         countDown(pin);
     
       greenLight();
